@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description"
+              content="AAI Music Gallery featuring tracks from Ace Attorney Investigations: Miles Edgeworth.">
+        <meta name="keywords" content="Ace Attorney, Music Gallery, Miles Edgeworth, Video Game Soundtracks">
+        <meta name="theme-color" content="#f0f0f0">
+        <title>AAI &mdash; Music Gallery</title>
+        <link rel="stylesheet" href="styles.css">
+        <link rel="icon" href="./resources/img/favicon.ico">
+    </head>
+    <body>
+        <div id="content-container" class="flex-row">
+            <nav id="cc-mugshot-gallery" class="flex-column"></nav>
+            <div id="cc-central-container" class="flex-column">
+                <main id="cc-track-card" class="flex-column">
+                    <div id="cc-tc-img-controls" class="flex-row">
+                        <img id="cc-tc-ic-prev" class="cc-tc-ic-button"
+                             src="resources/img/icons/nextImage.svg" alt="Previous image" title="Previous image"/>
+                        <p id="cc-tc-ic-text">Image XX of XX</p>
+                        <img id="cc-tc-ic-settings" class="cc-tc-ic-button"
+                            src="resources/img/icons/cog_(by_boxicons).svg" alt="Settings" title="Settings">
+                        <img id="cc-tc-ic-next" class="cc-tc-ic-button"
+                             src="resources/img/icons/nextImage.svg" alt="Next image" title="Next image"/>
+                    </div>
+                    <div id="cc-tc-img-container">
+                        <img id="cc-tc-img" alt="..." loading="lazy">
+                    </div>
+                    <div id="cc-tc-caption-container" class="flex-column">
+                        <div class="marquee-container flex-column" id="cc-tc-track-name-container" aria-hidden="true">
+                            <h2 class="marquee-content" id="cc-tc-track-name">Never Gonna Give You Up</h2>
+                        </div>
+                        <div class="marquee-container flex-column" id="cc-tc-track-performer-container">
+                            <p class="marquee-content" id="cc-tc-track-performer">Rick Astley</p>
+                        </div>
+                    </div>
+                </main>
+                <footer>
+                    <p>&copy; Lab. 2 by Vadim K. Chaykin,<br>#322864, P3324, MTT1.1</p>
+                    <p>&copy; All Ace Attorney characters are property of Capcom Co., Ltd.</p>
+                </footer>
+            </div>
+            <div id="cc-waveform" class="flex-column">
+                <svg id="cc-wf-svg" height="640" width="128">
+
+                </svg>
+            </div>
+        </div>
+        <div id="settings" hidden>
+            <div id="se-blocking-wall"></div>
+            <div id="se-window" class="flex-column">
+                <div id="se-wi-title-row" class="flex-row">
+                    <div></div>
+                    <h1>Settings</h1>
+                    <img id="se-wi-tr-close-button" class="cc-tc-ic-button"
+                         src="resources/img/icons/close.svg" alt="Close"/>
+                </div>
+                <form id="se-form" name="settings-form" class="flex-column">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <label for="se-fo-switch-enabled">Automatically switch images</label>
+                                </th>
+                                <td>
+                                    <input type="checkbox" id="se-fo-switch-enabled" name="switch-enabled"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <label for="se-fo-switch-timeout">Image switch timeout</label>
+                                </th>
+                                <td>
+                                    <div class="flex-row input-with-unit">
+                                        <input type="number" id="se-fo-switch-timeout" name="switch-timeout"
+                                            value="1000" min="500" max="10000" step="500"/>
+                                        <p>ms</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="flex-row">
+                        <input type="submit" value="Save settings">
+                    </div>
+                </form>
+            </div>
+        </div>
+        <script type="text/javascript" src="script.js"></script>
+    </body>
+</html>
