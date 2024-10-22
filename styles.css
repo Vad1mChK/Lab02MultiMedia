@@ -36,6 +36,7 @@
     --wall-color: #2653A7;
     --dark-submit-color: #157D26;
     --light-submit-color: #1B9822;
+    --translucent-light-submit-color: #1B982240;
     --ok-color: #94BC0E;
 }
 
@@ -161,6 +162,44 @@ body {
 
 #cc-tc-caption-container {
     padding: 0 32px;
+}
+
+#cc-tc-audio-controls-container {
+    width: 100%;
+    gap: 16px;
+}
+
+#cc-tc-audio-controls-container > div.flex-row {
+    gap: 32px;
+}
+
+#cc-tc-audio-controls-duration {
+    font-size: large;
+}
+
+#cc-tc-ac-du-outof {
+    font-style: italic;
+    color: var(--translucent-text-color);
+}
+
+.cc-tc-ac-button {
+    transition: 0.3s ease-in-out;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background-color: var(--light-submit-color);
+    cursor: pointer;
+}
+
+.cc-tc-ac-button:hover {
+    background-color: var(--dark-submit-color);
+    transform: scale(90%);
+}
+
+#cc-tc-ac-play {
+    width: 96px;
+    height: 96px;
+    border-radius: 24px;
 }
 
 @keyframes marquee {
@@ -294,4 +333,66 @@ input[type=submit] {
 
 input[type=submit]:hover {
     background: var(--light-submit-color);
+}
+
+input[type="range"] {
+    /* removing default appearance */
+    -webkit-appearance: none;
+    appearance: none;
+    /* creating a custom design */
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    border-radius: 16px;
+    /*  overflow: hidden;  remove this line*/
+
+    /* New additions */
+    height: 8px;
+    background: var(--translucent-text-color);
+}
+
+/* Thumb: webkit */
+input[type="range"]::-webkit-slider-thumb {
+    /* removing default appearance */
+    -webkit-appearance: none;
+    appearance: none;
+    /* creating a custom design */
+    height: 16px;
+    width: 16px;
+    background-color: var(--light-submit-color);
+    border-radius: 50%;
+    border: none;
+
+    /* box-shadow: -407px 0 0 400px #f50; emove this line */
+    transition: .2s ease-in-out;
+}
+
+/* Thumb: Firefox */
+input[type="range"]::-moz-range-thumb {
+    height: 16px;
+    width: 16px;
+    background-color: var(--light-submit-color);
+    border-radius: 50%;
+    border: none;
+
+    /* box-shadow: -407px 0 0 400px #f50; emove this line */
+    transition: .2s ease-in-out;
+}
+
+/* Hover, active & focus Thumb: Webkit */
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 10px var(--translucent-light-submit-color)
+}
+input[type="range"]:active::-webkit-slider-thumb, input[type="range"]:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 13px var(--translucent-light-submit-color)
+}
+
+/* Hover, active & focus Thumb: Firfox */
+
+input[type="range"]::-moz-range-thumb:hover {
+    box-shadow: 0 0 0 10px var(--translucent-light-submit-color)
+}
+input[type="range"]:active::-moz-range-thumb, input[type="range"]:focus::-moz-range-thumb {
+    box-shadow: 0 0 0 13px var(--translucent-light-submit-color)
 }

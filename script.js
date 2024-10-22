@@ -223,6 +223,16 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("cc-tc-ic-settings").addEventListener('click', openSettingsWindow);
     document.getElementById("cc-tc-ic-next").addEventListener('click', nextImage);
 
+    [...document.querySelectorAll("input[type=range]")].forEach((elem) => {
+        elem.addEventListener("input", (event) => {
+            const tempSliderValue = event.target.value;
+            const progress = (tempSliderValue / elem.max) * 100;
+            elem.style.background =
+                `linear-gradient(to right, 
+                var(--light-submit-color) ${progress}%, var(--translucent-text-color) ${progress}%)`;
+        })
+    })
+
     const settingsForm = document.forms['settings-form'];
     settingsForm.addEventListener('submit', (ev) => {
         ev.preventDefault();
