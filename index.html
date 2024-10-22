@@ -38,6 +38,7 @@
                     </div>
                     <div id="cc-tc-audio-controls-container" class="flex-column">
                         <input type="range" id="cc-tc-ac-audio-slider" min="0" max="100" value="0" step="1"/>
+                        <audio hidden>Audio is not available in this browser.</audio>
 
                         <div id="cc-tc-audio-controls-duration" class="flex-row">
                             <p id="cc-tc-ac-du-current">00:00</p>
@@ -51,7 +52,7 @@
                             <img id="cc-tc-ac-play" class="cc-tc-ac-button"
                                  src="resources/img/icons/play.svg" alt="Play/Pause" title="Play/Pause"/>
                             <img id="cc-tc-ac-next" class="cc-tc-ac-button"
-                                 src="resources/img/icons/nextTrack.svg" alt="Previous track" title="Previous track"/>
+                                 src="resources/img/icons/nextTrack.svg" alt="Next track" title="Next track"/>
                         </div>
                     </div>
                 </main>
@@ -64,6 +65,11 @@
                 <svg id="cc-wf-svg" height="640" width="128">
 
                 </svg>
+                <div id="cc-wf-color-sliders" class="flex-column">
+                    <input id="cc-wf-cs-red" class="vertical-slider" type="range" min="0" max="255" step="1" value="255">
+                    <input id="cc-wf-cs-green" class="vertical-slider" type="range" min="0" max="255" step="1" value="255">
+                    <input id="cc-wf-cs-blue" class="vertical-slider" type="range" min="0" max="255" step="1" value="255">
+                </div>
             </div>
         </div>
         <div id="settings" hidden>

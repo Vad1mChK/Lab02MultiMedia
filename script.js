@@ -202,6 +202,24 @@ function selectTrack(track) {
     updateLargeImage(track, 0);
 }
 
+function previousTrack() {
+    currentTrackIndex = data.tracks.indexOf(currentTrack);
+    trackCount = data.tracks.length;
+
+    if (currentTrackIndex !== -1) {
+        selectTrack(data.tracks[(currentTrackIndex + trackCount - 1) % trackCount]);
+    }
+}
+
+function nextTrack() {
+    currentTrackIndex = data.tracks.indexOf(currentTrack);
+    trackCount = data.tracks.length;
+
+    if (currentTrackIndex !== -1) {
+        selectTrack(data.tracks[(currentTrackIndex + 1) % trackCount]);
+    }
+}
+
 function addMugshot(mugshotGallery, track) {
     const mugshot = document.createElement("img");
     mugshot.id = `cc-mg-mugshot-${ track.trackId }`;
@@ -231,7 +249,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 `linear-gradient(to right, 
                 var(--light-submit-color) ${progress}%, var(--translucent-text-color) ${progress}%)`;
         })
-    })
+    });
+
+    document.getElementById("cc-tc-ac-prev").addEventListener('click', previousTrack);
+    document.getElementById("cc-tc-ac-next").addEventListener('click', nextTrack);
 
     const settingsForm = document.forms['settings-form'];
     settingsForm.addEventListener('submit', (ev) => {

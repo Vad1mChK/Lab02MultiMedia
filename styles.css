@@ -196,6 +196,10 @@ body {
     transform: scale(90%);
 }
 
+#cc-tc-ac-prev {
+    rotate: 180deg;
+}
+
 #cc-tc-ac-play {
     width: 96px;
     height: 96px;
