@@ -15,6 +15,9 @@
         <div id="content-container" class="flex-row">
             <nav id="cc-mugshot-gallery" class="flex-column"></nav>
             <div id="cc-central-container" class="flex-column">
+                <header>
+                    <h2>Web Multimedia Application</h2>
+                </header>
                 <main id="cc-track-card" class="flex-column">
                     <div id="cc-tc-img-controls" class="flex-row">
                         <img id="cc-tc-ic-prev" class="cc-tc-ic-button"
@@ -46,29 +49,42 @@
                             <p id="cc-tc-ac-du-total">00:00</p>
                         </div>
 
-                        <div id="cc-tc-audio-controls-buttons" class="flex-row">
+                        <div id="cc-tc-ac-buttons" class="flex-row">
                             <img id="cc-tc-ac-prev" class="cc-tc-ac-button"
-                                src="resources/img/icons/nextTrack.svg" alt="Previous track" title="Previous track"/>
+                                 src="resources/img/icons/nextTrack.svg" alt="Previous" title="Previous">
+                            <img id="cc-tc-ac-upload" class="cc-tc-ac-button"
+                                 src="resources/img/icons/upload.svg" alt="Upload" title="Upload">
                             <img id="cc-tc-ac-play" class="cc-tc-ac-button"
-                                 src="resources/img/icons/play.svg" alt="Play/Pause" title="Play/Pause"/>
+                                 src="resources/img/icons/play.svg" alt="Play/Pause" title="Play/Pause">
+                            <img id="cc-tc-ac-stop" class="cc-tc-ac-button"
+                                 src="resources/img/icons/stop.svg" alt="Stop" title="Stop">
                             <img id="cc-tc-ac-next" class="cc-tc-ac-button"
-                                 src="resources/img/icons/nextTrack.svg" alt="Next track" title="Next track"/>
+                                 src="resources/img/icons/nextTrack.svg" alt="Next" title="Next">
                         </div>
                     </div>
                 </main>
                 <footer>
-                    <p>&copy; Lab. 2 by Vadim K. Chaykin,<br>#322864, P3324, MTT1.1</p>
-                    <p>&copy; All Ace Attorney characters are property of Capcom Co., Ltd.</p>
+                    <p>&copy; Vadim K. Chaykin, #322864, P3324, MTT1.1</p>
+                    <p>&copy; Ace Attorney characters are property of Capcom</p>
                 </footer>
             </div>
             <div id="cc-waveform" class="flex-column">
                 <svg id="cc-wf-svg" height="640" width="128">
 
                 </svg>
-                <div id="cc-wf-color-sliders" class="flex-column">
-                    <input id="cc-wf-cs-red" class="vertical-slider" type="range" min="0" max="255" step="1" value="255">
-                    <input id="cc-wf-cs-green" class="vertical-slider" type="range" min="0" max="255" step="1" value="255">
-                    <input id="cc-wf-cs-blue" class="vertical-slider" type="range" min="0" max="255" step="1" value="255">
+                <div id="cc-wf-color-sliders" class="flex-row">
+                    <div class="flex-column">
+                        <input id="cc-wf-cs-red" class="vertical-slider" type="range" min="0" max="255" step="1" value="0">
+                        <label for="cc-wf-cs-red"><b>R</b></label>
+                    </div>
+                    <div class="flex-column">
+                        <input id="cc-wf-cs-green" class="vertical-slider" type="range" min="0" max="255" step="1" value="0">
+                        <label for="cc-wf-cs-green"><b>G</b></label>
+                    </div>
+                    <div class="flex-column">
+                        <input id="cc-wf-cs-blue" class="vertical-slider" type="range" min="0" max="255" step="1" value="0">
+                        <label for="cc-wf-cs-blue"><b>B</b></label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -111,6 +127,10 @@
                     </div>
                 </form>
             </div>
+        </div>
+        <div id="unsupported-res" class="flex-column" hidden="hidden">
+            <h2 class="error">Screen is too narrow</h2>
+            <p class="error">Width should be at least 960px.</p>
         </div>
         <script type="text/javascript" src="script.js"></script>
     </body>

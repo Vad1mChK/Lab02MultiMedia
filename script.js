@@ -242,12 +242,17 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("cc-tc-ic-next").addEventListener('click', nextImage);
 
     [...document.querySelectorAll("input[type=range]")].forEach((elem) => {
+        const progress = (elem.value / elem.max) * 100;
+        elem.style.background =
+            `linear-gradient(${ elem.classList.contains('vertical-slider') ? 'to top' : 'to right'}, 
+                var(--track-color, var(--light-submit-color)) ${progress}%, var(--translucent-text-color) ${progress}%)`;
         elem.addEventListener("input", (event) => {
             const tempSliderValue = event.target.value;
             const progress = (tempSliderValue / elem.max) * 100;
+            console.log(elem.style.color);
             elem.style.background =
-                `linear-gradient(to right, 
-                var(--light-submit-color) ${progress}%, var(--translucent-text-color) ${progress}%)`;
+                `linear-gradient(${ elem.classList.contains('vertical-slider') ? 'to top' : 'to right'}, 
+                var(--track-color, var(--light-submit-color)) ${progress}%, var(--translucent-text-color) ${progress}%)`;
         })
     });
 
