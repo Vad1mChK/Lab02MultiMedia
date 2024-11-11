@@ -274,6 +274,10 @@ function selectTrack(track) {
 
     updateWaveformColorFromTrack(track.trackColor);
 
+    if (isPlaying) {
+        audioTag.play();
+    }
+
     // Remove setupAudioVisualization() from here
     // It will be called when the user clicks play
 }
