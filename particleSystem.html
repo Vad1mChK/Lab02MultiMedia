@@ -2,14 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Upload Element</title>
+    <style>
+        /* Hide the file input element */
+        #file-upload {
+            display: none;
+        }
+
+        /* Style the custom upload button */
+        .upload-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .upload-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <script type="text/javascript">
-        document.addEventListener('DOMContentLoaded', () => {
+<h1>Hidden Upload Element Example</h1>
+<form>
+    <!-- Hidden file input -->
+    <input type="file" id="file-upload" name="file">
 
-        });
-    </script>
+    <!-- Custom button -->
+    <label for="file-upload" class="upload-button">Choose File</label>
+</form>
+
+<script>
+    const fileInput = document.getElementById('file-upload');
+    fileInput.addEventListener('change', (event) => {
+        const fileName = event.target.files[0]?.name || 'No file chosen';
+        alert(`File selected: ${fileName}`);
+    });
+</script>
 </body>
 </html>
