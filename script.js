@@ -82,12 +82,13 @@ let currentTrack = null;
 let currentImageIndex = 0;
 let imageAutoSwitcherId = null;
 let imageAutoSwitcherTimeout = 500;
-let audioContext;
+
+let waveformColor = { r: 0, g: 0, b: 0 };
+
+let audioContext = null;
 let analyserNode;
 let sourceNode;
 let animationId;
-
-let waveformColor = { r: 0, g: 0, b: 0 };
 
 /**
  * Formats a time value in seconds to "mm:ss" format.
@@ -273,11 +274,8 @@ function selectTrack(track) {
 
     updateWaveformColorFromTrack(track.trackColor);
 
-    if (isPlaying) {
-        audioTag.play();
-    }
-
-    setupAudioVisualization();
+    // Remove setupAudioVisualization() from here
+    // It will be called when the user clicks play
 }
 
 /** Selects the previous track in the track list. */
@@ -378,6 +376,13 @@ function togglePlayAudio(audioElement, playPauseButton) {
     } else {
         playPauseButton.src = '/resources/img/icons/pause.svg';
         audioElement.play();
+
+        // Create or resume AudioContext after user interaction
+        if (!audioContext) {
+            setupAudioVisualization();
+        } else if (audioContext.state === 'suspended') {
+            audioContext.resume();
+        }
     }
     isPlaying = !isPlaying;
 }
@@ -396,16 +401,16 @@ function setupAudioVisualization() {
     const track = audioContext.createMediaElementSource(audioElement);
 
     analyserNode = audioContext.createAnalyser();
-    analyserNode.fftSize = 64; // This gives us 32 bins
+    analyserNode.fftSize = 128;
 
     // Connect the audio graph
     track.connect(analyserNode);
     analyserNode.connect(audioContext.destination);
 
-    visualizeCanvas();
+    visualize();
 }
 
-function visualizeCanvas() {
+function visualize() {
     const canvas = document.getElementById('cc-wf-canvas');
     const canvasCtx = canvas.getContext('2d');
 
@@ -415,8 +420,6 @@ function visualizeCanvas() {
     const WIDTH = canvas.width;
     const HEIGHT = canvas.height;
 
-    console.log(`${WIDTH} x ${HEIGHT}`)
-
     function draw() {
         animationId = requestAnimationFrame(draw);
 
@@ -424,12 +427,33 @@ function visualizeCanvas() {
 
         canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
 
-        const barWidth = (WIDTH / bufferLength);
-        let barHeight;
-        let x = 0;
+        // const barWidth = (WIDTH / bufferLength);
+        // let barHeight;
+        // let x = 0;
+        let barWidth;
+        const barHeight = HEIGHT / bufferLength;
+        let y = 0;
 
         for (let i = 0; i < bufferLength; i++) {
-            barHeight = dataArray[i] / 255 * HEIGHT;
+            // barHeight = dataArray[i] / 255 * HEIGHT;
+            //
+            // // Create gradient color between left (red), right (blue), and middle (green)
+            // let red = waveformColor.r;
+            // let green = waveformColor.g;
+            // let blue = waveformColor.b;
+            //
+            // // Interpolate colors
+            // const ratio = i / bufferLength;
+            // red = red * (1 - ratio) + 0 * ratio;
+            // green = green * (1 - ratio) + 255 * ratio;
+            // blue = blue * (1 - ratio) + 255 * ratio;
+            //
+            // canvasCtx.fillStyle = `rgb(${Math.floor(red)}, ${Math.floor(green)}, ${Math.floor(blue)})`;
+            // canvasCtx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+            //
+            // x += barWidth + 1;
+
+            barWidth = dataArray[i] / 255 * WIDTH;
 
             // Create gradient color between left (red), right (blue), and middle (green)
             let red = waveformColor.r;
@@ -443,9 +467,9 @@ function visualizeCanvas() {
             blue = blue * (1 - ratio) + 255 * ratio;
 
             canvasCtx.fillStyle = `rgb(${Math.floor(red)}, ${Math.floor(green)}, ${Math.floor(blue)})`;
-            canvasCtx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
+            canvasCtx.fillRect(WIDTH - barWidth, y, barWidth, barHeight);
 
-            x += barWidth + 1;
+            y += barHeight + 1;
         }
     }
 

@@ -284,6 +284,10 @@ body {
     display: none;
 }
 
+#cc-wf-canvas {
+    mix-blend-mode: screen;
+}
+
 #cc-wf-color {
     gap: 16px;
 }
