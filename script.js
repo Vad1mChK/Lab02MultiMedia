@@ -85,11 +85,20 @@ let imageAutoSwitcherTimeout = 500;
 
 let waveformColor = { r: 0, g: 0, b: 0 };
 
+let animations = {
+    left: null,
+    middle: null,
+    right: null
+};
 let audioContext = null;
-let analyserNode;
-let sourceNode;
-let animationId;
-
+let audioNodes = {
+    source: null,
+    splitter: null,
+    leftAnalyzer: null,
+    middleAnalyzer: null,
+    rightAnalyzer: null,
+    merger: null,
+}
 /**
  * Formats a time value in seconds to "mm:ss" format.
  * @param {number} seconds - The time in seconds.
@@ -395,21 +404,40 @@ function setupAudioVisualization() {
     // Clean up previous audio context if exists
     if (audioContext) {
         audioContext.close();
-        cancelAnimationFrame(animationId);
+        for (let animationId of ['left', 'middle', 'right']) {
+            cancelAnimationFrame(animations[animationId])
+        }
     }
 
     // Create a new audio context
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
 
     const audioElement = document.getElementById('cc-tc-ac-audio');
-    const track = audioContext.createMediaElementSource(audioElement);
+    audioNodes.source = audioContext.createMediaElementSource(audioElement);
+    audioNodes.splitter = audioContext.createChannelSplitter(3);
+    audioNodes.leftAnalyzer = audioContext.createAnalyser();
+    audioNodes.middleAnalyzer = audioContext.createAnalyser();
+    audioNodes.rightAnalyzer = audioContext.createAnalyser();
+    audioNodes.merger = audioContext.createChannelMerger(3);
 
-    analyserNode = audioContext.createAnalyser();
-    analyserNode.fftSize = 128;
+    console.log(audioNodes.splitter.channelCount);
 
-    // Connect the audio graph
-    track.connect(analyserNode);
-    analyserNode.connect(audioContext.destination);
+    for (let analyzer of [
+        audioNodes.leftAnalyzer, audioNodes.middleAnalyzer, audioNodes.rightAnalyzer
+    ]) {
+        analyzer.fftSize = 128;
+    }
+
+    audioNodes.source.connect(audioNodes.splitter);
+    audioNodes.splitter.connect(audioNodes.leftAnalyzer, 0);
+    audioNodes.splitter.connect(audioNodes.middleAnalyzer, 2);
+    audioNodes.splitter.connect(audioNodes.rightAnalyzer, 1);
+    audioNodes.splitter.connect(audioNodes.merger, 0, 0);
+    audioNodes.splitter.connect(audioNodes.merger, 1, 1);
+    audioNodes.splitter.connect(audioNodes.merger, 2, 2);
+    audioNodes.merger.connect(audioContext.destination);
+
+    console.log(audioNodes);
 
     visualize();
 }
@@ -418,67 +446,98 @@ function visualize() {
     const canvas = document.getElementById('cc-wf-canvas');
     const canvasCtx = canvas.getContext('2d');
 
-    const bufferLength = analyserNode.frequencyBinCount;
-    const dataArray = new Uint8Array(bufferLength);
-
     const WIDTH = canvas.width;
     const HEIGHT = canvas.height;
 
-    function draw() {
-        animationId = requestAnimationFrame(draw);
+    const analyzers = [
+        audioNodes.leftAnalyzer,
+        // audioNodes.middleAnalyzer,
+        audioNodes.rightAnalyzer
+    ];
+    const animationIds = ['left', /* 'middle', */ 'right'];
+    const bufferLength = analyzers[0].frequencyBinCount; // Assuming all analyzers have the same buffer length
 
-        analyserNode.getByteFrequencyData(dataArray);
-
-        canvasCtx.clearRect(0, 0, WIDTH, HEIGHT);
-
-        // const barWidth = (WIDTH / bufferLength);
-        // let barHeight;
-        // let x = 0;
-        let barWidth;
-        const barHeight = HEIGHT / bufferLength;
-        let y = 0;
-
-        for (let i = 0; i < bufferLength; i++) {
-            // barHeight = dataArray[i] / 255 * HEIGHT;
-            //
-            // // Create gradient color between left (red), right (blue), and middle (green)
-            // let red = waveformColor.r;
-            // let green = waveformColor.g;
-            // let blue = waveformColor.b;
-            //
-            // // Interpolate colors
-            // const ratio = i / bufferLength;
-            // red = red * (1 - ratio) + 0 * ratio;
-            // green = green * (1 - ratio) + 255 * ratio;
-            // blue = blue * (1 - ratio) + 255 * ratio;
-            //
-            // canvasCtx.fillStyle = `rgb(${Math.floor(red)}, ${Math.floor(green)}, ${Math.floor(blue)})`;
-            // canvasCtx.fillRect(x, HEIGHT - barHeight, barWidth, barHeight);
-            //
-            // x += barWidth + 1;
-
-            barWidth = dataArray[i] / 255 * WIDTH;
-
-            // Create gradient color between left (red), right (blue), and middle (green)
-            let red = waveformColor.r;
-            let green = waveformColor.g;
-            let blue = waveformColor.b;
-
-            // Interpolate colors
-            const ratio = i / bufferLength;
-            red = red * (1 - ratio) + 0 * ratio;
-            green = green * (1 - ratio) + 255 * ratio;
-            blue = blue * (1 - ratio) + 255 * ratio;
-
-            canvasCtx.fillStyle = `rgb(${Math.floor(red)}, ${Math.floor(green)}, ${Math.floor(blue)})`;
-            canvasCtx.fillRect(WIDTH - barWidth, y, barWidth, barHeight);
-
-            y += barHeight + 1;
-        }
+    // Initialize the animations object if not already initialized
+    if (!window.animations) {
+        window.animations = {};
     }
 
-    draw();
+    const colorMultipliers = [
+        { r: 255, g: 0, b: 0 },
+        { r: 0, g: 255, b: 255 },
+    ];
+
+    // Start visualization for each analyzer
+    analyzers.forEach((analyzer, i) => {
+        // const offset = i * HEIGHT / analyzers.length;
+        // const height = HEIGHT / analyzers.length * 0.8;
+        // const animationId = animationIds[i];
+        // const dataArray = new Uint8Array(analyzer.frequencyBinCount);
+
+        const offset = i * WIDTH / analyzers.length;
+        const width = WIDTH / analyzers.length;
+        const animationId = animationIds[i];
+        const dataArray = new Uint8Array(analyzer.frequencyBinCount);
+
+        function draw() {
+            animations[animationId] = requestAnimationFrame(draw);
+
+            analyzer.getByteFrequencyData(dataArray);
+
+            const colorMultiplier = colorMultipliers[i];
+
+            // canvasCtx.clearRect(0, offset, WIDTH, height);
+            //
+            // const barWidth = WIDTH / bufferLength;
+            // let barHeight;
+            // let x = 0;
+            //
+            // for (let j = 0; j < bufferLength; j++) {
+            //     barHeight = dataArray[j] / 255 * height;
+            //
+            //     // Interpolate colors
+            //     const ratio = j / bufferLength;
+            //     let red = waveformColor.r * (1 - ratio) + (waveformColor.r * colorMultiplier.r) / 255 * ratio;
+            //     let green = waveformColor.g * (1 - ratio) + (waveformColor.g * colorMultiplier.g) / 255 * ratio;
+            //     let blue = waveformColor.b * (1 - ratio) + (waveformColor.b * colorMultiplier.b) / 255 * ratio;
+            //
+            //     canvasCtx.fillStyle = `rgb(${Math.floor(red)}, ${Math.floor(green)}, ${Math.floor(blue)})`;
+            //     canvasCtx.fillRect(x, offset + height - barHeight, barWidth, barHeight);
+            //
+            //     x += barWidth + 1;
+            // }
+
+            canvasCtx.clearRect(offset, 0, width, HEIGHT);
+
+            const barHeight = HEIGHT / bufferLength;
+            let barWidth;
+            let y = HEIGHT - barHeight;
+
+            for (let j = 0; j < bufferLength; j++) {
+                barWidth = dataArray[j] / 255 * width;
+
+                // Interpolate colors
+                const ratio = j / bufferLength;
+                let red = waveformColor.r * (1 - ratio) + (waveformColor.r * colorMultiplier.r) / 255 * ratio;
+                let green = waveformColor.g * (1 - ratio) + (waveformColor.g * colorMultiplier.g) / 255 * ratio;
+                let blue = waveformColor.b * (1 - ratio) + (waveformColor.b * colorMultiplier.b) / 255 * ratio;
+
+                canvasCtx.fillStyle = `rgb(${Math.floor(red)}, ${Math.floor(green)}, ${Math.floor(blue)})`;
+                if (i % 2 === 0) {
+                    canvasCtx.fillRect(offset + width - barWidth, y, barWidth, barHeight);
+                } else {
+                    canvasCtx.fillRect(offset, y, barWidth, barHeight);
+                }
+
+
+                y -= barHeight + 1;
+            }
+        }
+
+        draw();
+    });
 }
+
 
 document.addEventListener('DOMContentLoaded', () => {
     const audioControlButtons = {
