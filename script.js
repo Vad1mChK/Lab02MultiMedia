@@ -384,10 +384,10 @@ function updateSliderBackground(elem) {
  */
 function togglePlayAudio(audioElement, playPauseButton) {
     if (isPlaying) {
-        playPauseButton.src = '/resources/img/icons/play.svg';
+        playPauseButton.src = './resources/img/icons/play.svg';
         audioElement.pause();
     } else {
-        playPauseButton.src = '/resources/img/icons/pause.svg';
+        playPauseButton.src = './resources/img/icons/pause.svg';
         audioElement.play();
 
         // Create or resume AudioContext after user interaction
