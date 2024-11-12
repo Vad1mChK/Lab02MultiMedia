@@ -2,10 +2,11 @@ name: Lab02MultiMedia
 run-name: ${{ github.actor }}
 on: [push]
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-    - name: Checkout repository code
-      uses: actions/checkout@v4
-    - name: List files in the repository
-      run: |
-        ls ${{ github.workspace }}
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository code
+        uses: actions/checkout@v4
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
