@@ -13,9 +13,7 @@
     </head>
     <body>
         <div id="content-container" class="flex-row">
-            <div id="visualizer">
-                <div id="visualized"></div>
-            </div>
+            <canvas id="cc-visualizer"></canvas>
             <div id="background-blocking-wall"></div>
             <nav id="cc-mugshot-gallery" class="flex-column"></nav>
             <div id="cc-central-container" class="flex-column">
@@ -48,9 +46,9 @@
                         <audio hidden id="cc-tc-ac-audio">Audio is not available in this browser.</audio>
 
                         <div id="cc-tc-audio-controls-duration" class="flex-row">
-                            <p id="cc-tc-ac-du-t-current">00:00</p>
+                            <p id="cc-tc-ac-du-t-current">0:00</p>
                             <p id="cc-tc-ac-du-outof">out of</p>
-                            <p id="cc-tc-ac-du-t-total">00:00</p>
+                            <p id="cc-tc-ac-du-t-total">0:00</p>
                         </div>
 
                         <div id="cc-tc-ac-buttons" class="flex-row">
@@ -149,6 +147,8 @@
             <h2 class="error">Screen is too short</h2>
             <p class="error">Height should be at least 720px.</p>
         </div>
+        <script type="text/javascript" src="audioContextSetup.js"></script>
+        <script type="text/javascript" src="particles.js"></script>
         <script type="text/javascript" src="script.js"></script>
     </body>
 </html>

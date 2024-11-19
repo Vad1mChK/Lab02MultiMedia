@@ -73,12 +73,13 @@ body {
     flex-direction: column;
 }
 
-#visualizer {
+#cc-visualizer {
     position: absolute;
     width: 100vw;
     height: 100vh;
     overflow: hidden;
     z-index: -20;
+    mix-blend-mode: screen;
 }
 
 @keyframes rot {
@@ -97,7 +98,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    backdrop-filter: blur(32px);
+    backdrop-filter: blur(16px);
     z-index: -10;
 }
 
@@ -197,6 +198,11 @@ body {
 #cc-tc-img {
     max-height: 100%;
     max-width: 100%;
+    cursor: grab;
+}
+
+#cc-tc-img:active {
+    cursor: grabbing;
 }
 
 #cc-tc-caption-container {
@@ -559,6 +565,15 @@ input[type="range"]:active::-moz-range-thumb, input[type="range"]:focus::-moz-ra
 
 @media screen and (height < 900px) {
     #cc-wf-svg, #cc-central-container footer, #cc-central-container header {
+        display: none;
+    }
+
+    #cc-wf-canvas {
+        height: 80px;
+        width: 160px;
+    }
+
+    #cc-wf-color-preview {
         display: none;
     }
 

@@ -85,20 +85,10 @@ let imageAutoSwitcherTimeout = 500;
 
 let waveformColor = { r: 0, g: 0, b: 0 };
 
-let animations = {
+let waveformAnimations = {
     left: null,
-    middle: null,
     right: null
 };
-let audioContext = null;
-let audioNodes = {
-    source: null,
-    splitter: null,
-    leftAnalyzer: null,
-    middleAnalyzer: null,
-    rightAnalyzer: null,
-    merger: null,
-}
 /**
  * Formats a time value in seconds to "mm:ss" format.
  * @param {number} seconds - The time in seconds.
@@ -248,6 +238,7 @@ function updateWaveformColorFromTrack(color) {
         g: (colorNumber >> 8) & 0xFF,
         b: colorNumber & 0xFF
     };
+    particleGenerator.setColor(waveformColor);
     setWaveformColorToSliders();
     updateWaveformColorAndPreviewFromInputs();
 }
@@ -260,6 +251,7 @@ function updateWaveformColorAndPreviewFromInputs() {
     const colorPreviewBox = document.getElementById('cc-wf-cpr-box');
     const colorPreviewText = document.getElementById('cc-wf-cpr-text');
     updateWaveformColor(redSlider, greenSlider, blueSlider, colorPreviewBox, colorPreviewText);
+    updateParticleColor(redSlider, greenSlider, blueSlider);
 }
 
 /**
@@ -351,6 +343,14 @@ function updateWaveformColor(redSlider, greenSlider, blueSlider, previewBox, pre
     previewText.innerText = `#${colorHex}`;
 }
 
+function updateParticleColor(redSlider, greenSlider, blueSlider) {
+    particleGenerator.setColor( {
+        r: parseInt(redSlider.value),
+        g: parseInt(greenSlider.value),
+        b: parseInt(blueSlider.value)
+    }    );
+}
+
 /** Sets the waveform color sliders to match the current waveform color. */
 function setWaveformColorToSliders() {
     const redSlider = document.getElementById('cc-wf-cs-red');
@@ -391,58 +391,22 @@ function togglePlayAudio(audioElement, playPauseButton) {
         audioElement.play();
 
         // Create or resume AudioContext after user interaction
-        if (!audioContext) {
+        if (!audioController || !audioController.audioContext) {
+            audioController = new AudioController(audioElement.id);
             setupAudioVisualization();
-        } else if (audioContext.state === 'suspended') {
-            audioContext.resume();
+        } else if (audioController.audioContext.state === 'suspended') {
+            audioController.audioContext.resume();
         }
     }
     isPlaying = !isPlaying;
 }
 
 function setupAudioVisualization() {
-    // Clean up previous audio context if exists
-    if (audioContext) {
-        audioContext.close();
-        for (let animationId of ['left', 'middle', 'right']) {
-            cancelAnimationFrame(animations[animationId])
-        }
-    }
-
-    // Create a new audio context
-    audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-    const audioElement = document.getElementById('cc-tc-ac-audio');
-    audioNodes.source = audioContext.createMediaElementSource(audioElement);
-    audioNodes.splitter = audioContext.createChannelSplitter(3);
-    audioNodes.leftAnalyzer = audioContext.createAnalyser();
-    audioNodes.middleAnalyzer = audioContext.createAnalyser();
-    audioNodes.rightAnalyzer = audioContext.createAnalyser();
-    audioNodes.merger = audioContext.createChannelMerger(3);
-
-    console.log(audioNodes.splitter.channelCount);
-
-    for (let analyzer of [
-        audioNodes.leftAnalyzer, audioNodes.middleAnalyzer, audioNodes.rightAnalyzer
-    ]) {
-        analyzer.fftSize = 128;
-    }
-
-    audioNodes.source.connect(audioNodes.splitter);
-    audioNodes.splitter.connect(audioNodes.leftAnalyzer, 0);
-    audioNodes.splitter.connect(audioNodes.middleAnalyzer, 2);
-    audioNodes.splitter.connect(audioNodes.rightAnalyzer, 1);
-    audioNodes.splitter.connect(audioNodes.merger, 0, 0);
-    audioNodes.splitter.connect(audioNodes.merger, 1, 1);
-    audioNodes.splitter.connect(audioNodes.merger, 2, 2);
-    audioNodes.merger.connect(audioContext.destination);
-
-    console.log(audioNodes);
-
-    visualize();
+    visualizeWaveform();
+    particleGenerator.start();
 }
 
-function visualize() {
+function visualizeWaveform() {
     const canvas = document.getElementById('cc-wf-canvas');
     const canvasCtx = canvas.getContext('2d');
 
@@ -450,11 +414,10 @@ function visualize() {
     const HEIGHT = canvas.height;
 
     const analyzers = [
-        audioNodes.leftAnalyzer,
-        // audioNodes.middleAnalyzer,
-        audioNodes.rightAnalyzer
+        audioController.leftAnalyzer,
+        audioController.rightAnalyzer
     ];
-    const animationIds = ['left', /* 'middle', */ 'right'];
+    const animationIds = ['left', 'right'];
     const bufferLength = analyzers[0].frequencyBinCount; // Assuming all analyzers have the same buffer length
 
     // Initialize the animations object if not already initialized
@@ -480,7 +443,7 @@ function visualize() {
         const dataArray = new Uint8Array(analyzer.frequencyBinCount);
 
         function draw() {
-            animations[animationId] = requestAnimationFrame(draw);
+            waveformAnimations[animationId] = requestAnimationFrame(draw);
 
             analyzer.getByteFrequencyData(dataArray);
 
