@@ -581,6 +581,7 @@ input[type="range"]:active::-moz-range-thumb, input[type="range"]:focus::-moz-ra
         display: block;
         text-align: center;
         writing-mode: vertical-rl;
+        rotate: 180deg;
     }
 
     #cc-wf-header p {
