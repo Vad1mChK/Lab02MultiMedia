@@ -4,151 +4,91 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description"
-              content="AAI Music Gallery featuring tracks from Ace Attorney Investigations: Miles Edgeworth.">
-        <meta name="keywords" content="Ace Attorney, Music Gallery, Miles Edgeworth, Video Game Soundtracks">
+              content="TF2 Music Gallery featuring tracks from Team Fortress 2.">
+        <meta name="keywords" content="Team Fortress 2, Music Gallery, TF2, Video Game Soundtracks">
         <meta name="theme-color" content="#f0f0f0">
-        <title>AAI &mdash; Music Gallery</title>
+
+        <title>TF2 &mdash; Music Gallery</title>
+
         <link rel="stylesheet" href="styles.css">
-        <link rel="icon" href="./resources/img/favicon.ico">
+        <link rel="icon" href="res/img/favicon.ico">
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.min.js"></script>
     </head>
     <body>
-        <div id="content-container" class="flex-row">
-            <canvas id="cc-visualizer"></canvas>
-            <div id="background-blocking-wall"></div>
-            <nav id="cc-mugshot-gallery" class="flex-column"></nav>
-            <div id="cc-central-container" class="flex-column">
-                <header>
-                    <h2>Web Multimedia Application</h2>
-                </header>
-                <main id="cc-track-card" class="flex-column">
-                    <div id="cc-tc-img-controls" class="flex-row">
-                        <img id="cc-tc-ic-prev" class="cc-tc-ic-button"
-                             src="resources/img/icons/nextImage.svg" alt="Previous image" title="Previous image"/>
-                        <p id="cc-tc-ic-text">Image XX of XX</p>
-                        <img id="cc-tc-ic-settings" class="cc-tc-ic-button"
-                            src="resources/img/icons/cog_(by_boxicons).svg" alt="Settings" title="Settings">
-                        <img id="cc-tc-ic-next" class="cc-tc-ic-button"
-                             src="resources/img/icons/nextImage.svg" alt="Next image" title="Next image"/>
-                    </div>
-                    <div id="cc-tc-img-container">
-                        <img id="cc-tc-img" alt="..." loading="lazy">
-                    </div>
-                    <div id="cc-tc-caption-container" class="flex-column">
-                        <div class="marquee-container flex-column" id="cc-tc-track-name-container" aria-hidden="true">
-                            <h2 class="marquee-content" id="cc-tc-track-name">Never Gonna Give You Up</h2>
-                        </div>
-                        <div class="marquee-container flex-column" id="cc-tc-track-performer-container">
-                            <p class="marquee-content" id="cc-tc-track-performer">Rick Astley</p>
-                        </div>
-                    </div>
-                    <div id="cc-tc-audio-controls-container" class="flex-column">
-                        <input type="range" id="cc-tc-ac-seek-bar" min="0" max="100" value="0" step="1"/>
-                        <audio hidden id="cc-tc-ac-audio">Audio is not available in this browser.</audio>
-
-                        <div id="cc-tc-audio-controls-duration" class="flex-row">
-                            <p id="cc-tc-ac-du-t-current">0:00</p>
-                            <p id="cc-tc-ac-du-outof">out of</p>
-                            <p id="cc-tc-ac-du-t-total">0:00</p>
-                        </div>
-
-                        <div id="cc-tc-ac-buttons" class="flex-row">
-                            <img id="cc-tc-ac-prev" class="cc-tc-ac-button"
-                                 src="resources/img/icons/nextTrack.svg" alt="Previous" title="Previous">
-<!--                            <img id="cc-tc-ac-upload" class="cc-tc-ac-button"-->
-<!--                                 src="resources/img/icons/upload.svg" alt="Upload" title="Upload">-->
-                            <img id="cc-tc-ac-play" class="cc-tc-ac-button"
-                                 src="resources/img/icons/play.svg" alt="Play/Pause" title="Play/Pause">
-<!--                            <img id="cc-tc-ac-stop" class="cc-tc-ac-button"-->
-<!--                                 src="resources/img/icons/stop.svg" alt="Stop" title="Stop">-->
-                            <img id="cc-tc-ac-next" class="cc-tc-ac-button"
-                                 src="resources/img/icons/nextTrack.svg" alt="Next" title="Next">
-                        </div>
-                    </div>
-                </main>
-                <footer>
-                    <p>&copy; Vadim K. Chaykin, #322864, P3324, MTT1.1</p>
-                    <p>&copy; Ace Attorney characters are property of Capcom</p>
-                </footer>
-            </div>
-            <div id="cc-waveform" class="flex-column">
-                <canvas id="cc-wf-canvas" height="480" width="128"></canvas>
-                <div id="cc-wf-header">
-                    <h2>Web Multimedia App</h2>
-                    <p>&copy; Vadim K. Chaykin, P3324, MTT1.1</p>
-                    <p>&copy; Ace Attorney characters belong to Capcom</p>
+        <div class="content flex flex-horiz">
+            <div class="black-box flex flex-vert">
+                <h1>Never Gonna Give You Up</h1>
+                <h2>Rick Astley</h2>
+                <div class="flex flex-horiz" style="width: 100%; height: fit-content; justify-content: space-between">
+                    <input type="range" style="width: 70%">
+                    <p>88:88 / 88:88</p>
                 </div>
-                <div id="cc-wf-color">
-                    <div id="cc-wf-color-sliders" class="flex-row">
-                        <div class="flex-column">
-                            <input id="cc-wf-cs-red" class="vertical-slider" type="range" min="0" max="255" step="1" value="0">
-                            <label for="cc-wf-cs-red"><b>R</b></label>
-                        </div>
-                        <div class="flex-column">
-                            <input id="cc-wf-cs-green" class="vertical-slider" type="range" min="0" max="255" step="1" value="0">
-                            <label for="cc-wf-cs-green"><b>G</b></label>
-                        </div>
-                        <div class="flex-column">
-                            <input id="cc-wf-cs-blue" class="vertical-slider" type="range" min="0" max="255" step="1" value="0">
-                            <label for="cc-wf-cs-blue"><b>B</b></label>
-                        </div>
+                <div class="flex flex-horiz flex-spaced-row">
+                    <img src="res/img/icons/skip_previous.svg" alt="Previous"
+                         class="icon-button" id="previous_button" onclick="console.log('Previous')">
+                    <img src="res/img/icons/settings.svg" alt="Settings"
+                         class="icon-button" id="settings_button" onclick="console.log('Settings')">
+                    <img src="res/img/icons/play.svg" alt="Play"
+                         class="icon-button" id="play_pause_button" onclick="console.log('Play/Pause')">
+                    <img src="res/img/icons/stop.svg" alt="Stop"
+                         class="icon-button" id="stop_button" onclick="console.log('Stop')">
+                    <img src="res/img/icons/skip_next.svg" alt="Next"
+                         class="icon-button" id="next_button" onclick="console.log('Next')">
+                </div>
+            </div>
+            <div class="black-box flex flex-vert">
+                <div class="flex flex-horiz flex-spaced-row">
+                    <img src="res/img/icons/arrow_back.svg" alt="Previous image">
+                    <div class="character-container">
+                        <img src="res/img/large/engineer.webp" alt="Character Image" class="character">
                     </div>
-                    <div id="cc-wf-color-preview" class="flex-row">
-                        <div id="cc-wf-cpr-box"></div>
-                        <p id="cc-wf-cpr-text">#??????</p>
-                    </div>
+                    <img src="res/img/icons/arrow_forward.svg" alt="Next image">
                 </div>
             </div>
         </div>
-        <div id="settings" hidden>
-            <div id="se-blocking-wall"></div>
-            <div id="se-window" class="flex-column">
-                <div id="se-wi-title-row" class="flex-row">
-                    <div></div>
-                    <h1>Settings</h1>
-                    <img id="se-wi-tr-close-button" class="cc-tc-ic-button"
-                         src="resources/img/icons/close.svg" alt="Close"/>
-                </div>
-                <form id="se-form" name="settings-form" class="flex-column">
-                    <table>
-                        <tbody>
-                            <tr>
-                                <th>
-                                    <label for="se-fo-switch-enabled">Automatically switch images</label>
-                                </th>
-                                <td>
-                                    <input type="checkbox" id="se-fo-switch-enabled" name="switch-enabled"/>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <label for="se-fo-switch-timeout">Image switch timeout</label>
-                                </th>
-                                <td>
-                                    <div class="flex-row input-with-unit">
-                                        <input type="number" id="se-fo-switch-timeout" name="switch-timeout"
-                                            value="1000" min="500" max="10000" step="500"/>
-                                        <p>ms</p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="flex-row">
-                        <input type="submit" value="Save settings">
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div id="unsupported-width" class="flex-column" hidden="hidden">
-            <h2 class="error">Screen is too narrow</h2>
-            <p class="error">Width should be at least 960px.</p>
-        </div>
-        <div id="unsupported-height" class="flex-column" hidden="hidden">
-            <h2 class="error">Screen is too short</h2>
-            <p class="error">Height should be at least 720px.</p>
-        </div>
-        <script type="text/javascript" src="audioContextSetup.js"></script>
-        <script type="text/javascript" src="particles.js"></script>
-        <script type="text/javascript" src="script.js"></script>
+        <script type="application/json" id="data">
+            {
+                "tracks": {
+                    "demoman": {
+                        "colors": {
+                            "primary": "#5885A2",
+                            "secondary": "#28394D"
+                        },
+                        "music": "res/music/demoman.mp3",
+                        "track_name": "Drunken Pipe Bomb",
+                        "track_performer": "Team Fortress 2",
+                        "default_image_index": 0
+                    },
+                    "engineer": {
+                        "colors": {
+                            "primary": "#B88035",
+                            "secondary": "#384248"
+                        },
+                        "music": "res/music/engineer.mp3",
+                        "track_name": "Upgrade Station",
+                        "track_performer": "Team Fortress 2",
+                        "default_image_index": 1
+                    },
+                    "soldier": {
+                        "colors": {
+                            "primary": "#B8383B",
+                            "secondary": "#483838"
+                        },
+                        "music": "res/music/soldier.mp3",
+                        "track_name": "Rocket Jump Waltz",
+                        "track_performer": "Team Fortress 2",
+                        "default_image_index": 2
+                    }
+                },
+                "images": [
+                    "res/img/large/demoman.webp",
+                    "res/img/large/engineer.webp",
+                    "res/img/large/soldier.webp"
+                ]
+            }
+        </script>
+        <script type="text/javascript" src="src/main.js"></script>
     </body>
 </html>
