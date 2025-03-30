@@ -2,11 +2,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    --main-text-color: #f4f4f4;
+    --main-bg-color: #101010;
+    --ok-color: #94bc0e;
 }
 
 body {
-    background: #101010;
+    background: var(--main-bg-color);
     font-family: "Franklin Gothic", Verdana, Tahoma, sans-serif;
+    font-size: 14pt;
 }
 
 #p5-canvas {
@@ -48,7 +53,7 @@ body {
 .black-box {
     padding: 32px;
     border-radius: 32px;
-    color: #f4f4f4;
+    color: var(--main-text-color);
     background: #10101080;
     backdrop-filter: blur(32px);
     min-width: 480px;
@@ -66,6 +71,7 @@ body {
     width: 320px;
     height: 320px;
     position: relative;
+    cursor: crosshair;
 }
 
 .character-container .character {
@@ -84,4 +90,65 @@ body {
 
 .icon-button:hover {
     transform: scale(110%);
+}
+
+.audio-controls .icon-button {
+    width: 48pt;
+}
+
+.settings label.disabled {
+    opacity: 75%;
+    text-decoration: line-through 2px;
+    font-style: italic;
+}
+
+.settings input[type=text],
+.settings input[type=password],
+.settings textarea,
+.settings input[type=number] {
+    font: inherit;
+    background: #3E3C39;
+    color: var(--main-text-color);
+    padding: 4pt;
+    border: none;
+    border-radius: 4pt;
+}
+
+.settings input[type=text]:disabled,
+.settings input[type=password]:disabled,
+.settings textarea:disabled,
+.settings input[type=number]:disabled {
+    background: #4d5156;
+    color: #a3a2a4;
+    filter: blur(10pt);
+}
+
+input[type=checkbox] {
+    transition: 0.3s ease-in-out;
+    appearance: none;
+    width: 36px;
+    height: 16px;
+    border-radius: 12px;
+    background: #3E3C39;
+    cursor: pointer;
+}
+
+input[type=checkbox]::after {
+    transition: 0.3s ease-in-out;
+    content: "";
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 16px;
+    margin-left: 0;
+    margin-top: -2px;
+    background: var(--main-text-color);
+}
+
+input[type=checkbox]:checked {
+    background: var(--ok-color);
+}
+
+input[type=checkbox]:checked::after {
+    margin-left: 16px;
 }
