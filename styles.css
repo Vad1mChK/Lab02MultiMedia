@@ -4,8 +4,13 @@
     box-sizing: border-box;
 
     --main-text-color: #f4f4f4;
+    --translucent-text-color: #f4f4f440;
     --main-bg-color: #101010;
     --ok-color: #94bc0e;
+    --thumb-color: #078BC9;
+    --translucent-thumb-color: #078BC980;
+    --light-submit-color: #2ACDE8;
+    --translucent-light-submit-color: #2ACDE880;
 }
 
 body {
@@ -43,7 +48,7 @@ body {
 .flex-spaced-row {
     width: 100%;
     height: fit-content;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .flex-vert {
@@ -106,6 +111,7 @@ body {
 .settings input[type=password],
 .settings textarea,
 .settings input[type=number] {
+    transition: all 0.2s ease-in-out;
     font: inherit;
     background: #3E3C39;
     color: var(--main-text-color);
@@ -120,7 +126,7 @@ body {
 .settings input[type=number]:disabled {
     background: #4d5156;
     color: #a3a2a4;
-    filter: blur(10pt);
+    filter: blur(6pt);
 }
 
 input[type=checkbox] {
@@ -152,3 +158,74 @@ input[type=checkbox]:checked {
 input[type=checkbox]:checked::after {
     margin-left: 16px;
 }
+
+/* Sliders */
+input[type="range"] {
+    /* removing default appearance */
+    -webkit-appearance: none;
+    appearance: none;
+    /* creating a custom design */
+    width: 100%;
+    cursor: pointer;
+    outline: none;
+    border-radius: 16px;
+    /*  overflow: hidden;  remove this line*/
+
+    /* New additions */
+    height: 8px;
+    background: var(--translucent-text-color);
+}
+
+input[type="range"].vertical-slider {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    height: unset;
+    width: 8px;
+}
+
+/* Thumb: webkit */
+input[type="range"]::-webkit-slider-thumb {
+    /* removing default appearance */
+    -webkit-appearance: none;
+    appearance: none;
+    /* creating a custom design */
+    height: 16px;
+    width: 16px;
+    background-color: var(--thumb-color, var(--light-submit-color));
+    border-radius: 50%;
+    border: none;
+
+    /* box-shadow: -407px 0 0 400px #f50; emove this line */
+    transition: .2s ease-in-out;
+}
+
+/* Thumb: Firefox */
+input[type="range"]::-moz-range-thumb {
+    height: 16px;
+    width: 16px;
+    background-color: var(--thumb-color, var(--light-submit-color));
+    border-radius: 50%;
+    border: none;
+
+    /* box-shadow: -407px 0 0 400px #f50; emove this line */
+    transition: .2s ease-in-out;
+}
+
+/* Hover, active & focus Thumb: Webkit */
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    box-shadow: 0 0 0 10px var(--translucent-thumb-color, var(--translucent-light-submit-color));
+}
+input[type="range"]:active::-webkit-slider-thumb, input[type="range"]:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 13px var(--translucent-thumb-color, var(--translucent-light-submit-color));
+}
+
+/* Hover, active & focus Thumb: Firfox */
+
+input[type="range"]::-moz-range-thumb:hover {
+    box-shadow: 0 0 0 10px var(--translucent-thumb-color, var(--translucent-light-submit-color));
+}
+input[type="range"]:active::-moz-range-thumb, input[type="range"]:focus::-moz-range-thumb {
+    box-shadow: 0 0 0 13px var(--translucent-thumb-color, var(--translucent-light-submit-color));
+}
+/* /Sliders */

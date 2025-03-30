@@ -19,21 +19,22 @@
     <body>
         <div class="content flex flex-horiz">
             <div class="black-box flex flex-vert">
-                <h1>Never Gonna Give You Up</h1>
-                <h2>Rick Astley</h2>
+                <h1 id="track_name">Never Gonna Give You Up</h1>
+                <h2 id="track_performer">Rick Astley</h2>
                 <div class="flex flex-horiz audio-controls" style="width: 100%; height: fit-content; justify-content: space-between">
-                    <input type="range" style="width: 70%">
-                    <p>88:88 / 88:88</p>
+                    <input type="range" min="0" max="100" value="0" style="width: 100%" id="audio_seeker">
                 </div>
+                <div class="flex flex-horiz" style="gap: 16pt;">
+                    <p id="audio_time">88:88</p>
+                    <p>out of</p>
+                    <p id="audio_duration_time">88:88</p>
+                </div>
+                <audio src="res/music/demoman.mp3" id="audio"></audio>
                 <div class="flex flex-horiz flex-spaced-row audio-controls">
                     <img src="res/img/icons/skip_previous.svg" alt="Previous"
                          class="icon-button" id="previous_button" onclick="console.log('Previous')">
-<!--                    <img src="res/img/icons/settings.svg" alt="Settings"-->
-<!--                         class="icon-button" id="settings_button" onclick="console.log('Settings')">-->
                     <img src="res/img/icons/play.svg" alt="Play"
                          class="icon-button" id="play_pause_button" onclick="console.log('Play/Pause')">
-<!--                    <img src="res/img/icons/stop.svg" alt="Stop"-->
-<!--                         class="icon-button" id="stop_button" onclick="console.log('Stop')">-->
                     <img src="res/img/icons/skip_next.svg" alt="Next"
                          class="icon-button" id="next_button" onclick="console.log('Next')">
                 </div>
@@ -63,7 +64,7 @@
         </div>
         <script type="application/json" id="data">
             {
-                "names": [
+                "ids": [
                     "demoman",
                     "engineer",
                     "soldier"
@@ -107,7 +108,9 @@
                 ]
             }
         </script>
+        <script type="text/javascript" src="src/dataUtils.js"></script>
         <script type="text/javascript" src="src/imageControls.js"></script>
+        <script type="text/javascript" src="src/audioControls.js"></script>
         <script type="text/javascript" src="src/main.js"></script>
     </body>
 </html>

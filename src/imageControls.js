@@ -15,6 +15,12 @@ const imageState = {
     reloadImage: () => {}
 };
 
+const onImageInit = (imageElement) => {
+    const indexParsed = parseInt(localStorage.getItem('baseIndex') ?? '');
+    const index = (!isNaN(indexParsed)) ? indexParsed : 0;
+    imageState.setBaseImageIndex(index);
+}
+
 const onAutoSwitchEnabledInit = (checkboxElement, otherActions) => {
     let enabled = false;
     try {
@@ -34,10 +40,6 @@ const onAutoSwitchEnabledChange = (checkboxElement, otherActions) => {
     imageState.autoSwitchEnabled = enabled;
     // checkboxElement.checked is already correct; no need to set it
     if (otherActions) otherActions(enabled);
-}
-
-const loadData = (dataElement) => {
-    return JSON.parse(dataElement.textContent);
 }
 
 imageState.setBaseImageIndex = (index) => {
@@ -153,4 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = loadData(dataElement);
     imageState.imageList = data.images;
     imageState.imageCount = data.images.length;
+
+    onImageInit(imageElement);
 });
