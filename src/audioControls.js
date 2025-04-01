@@ -8,7 +8,9 @@ const audioState = {
     currentTrackId: '',
     isPlaying: false,
     p5Sound: null,
-    p5LoadSoundFunc: (url) => {},
+    p5LoadSoundFunc: (url) => {
+        // Do not place loadSound here by default; but it will be assigned here during p5 setup
+    },
 
     playAudio(audioElement) {
         this.isPlaying = true;
@@ -196,41 +198,30 @@ document.addEventListener('DOMContentLoaded', () => {
     const previousButton = document.getElementById('previous_button');
     const nextButton = document.getElementById('next_button');
 
+    const updatePreviousOrNextTrackInfo = (track) => {
+        if (track.track_name) {
+            trackNameElement.textContent = track.track_name;
+        }
+        if (track.track_performer) {
+            trackPerformerElement.textContent = track.track_performer;
+        }
+        // Reset the seeker for the new track
+        seekerElement.value = 0;
+        currentTimeElement.textContent = formatTime(0);
+        if (audioState.isPlaying) {
+            audioState.playAudio(audioElement);
+        }
+    };
+
     if (previousButton) {
-        previousButton.addEventListener('click', () => {
-            audioState.setPreviousTrackIndex(audioElement, data, (track) => {
-                if (track.track_name) {
-                    trackNameElement.textContent = track.track_name;
-                }
-                if (track.track_performer) {
-                    trackPerformerElement.textContent = track.track_performer;
-                }
-                // Reset the seeker for the new track
-                seekerElement.value = 0;
-                currentTimeElement.textContent = formatTime(0);
-                if (audioState.isPlaying) {
-                    audioState.playAudio(audioElement);
-                }
-            });
-        });
+        previousButton.addEventListener('click', () =>
+            audioState.setPreviousTrackIndex(audioElement, data, updatePreviousOrNextTrackInfo)
+        )
     }
 
     if (nextButton) {
-        nextButton.addEventListener('click', () => {
-            audioState.setNextTrackIndex(audioElement, data, (track) => {
-                if (track.track_name) {
-                    trackNameElement.textContent = track.track_name;
-                }
-                if (track.track_performer) {
-                    trackPerformerElement.textContent = track.track_performer;
-                }
-                // Reset the seeker for the new track
-                seekerElement.value = 0;
-                currentTimeElement.textContent = formatTime(0);
-                if (audioState.isPlaying) {
-                    audioState.playAudio(audioElement);
-                }
-            });
-        });
+        nextButton.addEventListener('click', () =>
+            audioState.setNextTrackIndex(audioElement, data, updatePreviousOrNextTrackInfo)
+        )
     }
 });
