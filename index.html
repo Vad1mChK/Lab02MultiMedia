@@ -29,7 +29,8 @@
                     <p>out of</p>
                     <p id="audio_duration_time">88:88</p>
                 </div>
-                <audio src="res/music/demoman.mp3" id="audio"></audio>
+<!--                <audio src="res/music/demoman.mp3" id="audio"></audio>-->
+<!--                It seems p5 cannot work with audio element and should handle sound in another way-->
                 <div class="flex flex-horiz flex-spaced-row audio-controls">
                     <img src="res/img/icons/skip_previous.svg" alt="Previous"
                          class="icon-button" id="previous_button" onclick="console.log('Previous')">
@@ -56,12 +57,19 @@
                 <div class="flex flex-horiz flex-spaced-row">
                     <img src="res/img/icons/arrow_back.svg" alt="Previous image" id="character-image-prev" class="icon-button">
                     <div class="character-container">
-                        <img src="res/img/large/engineer.webp" alt="Character Image" class="character" id="character-large-image">
+                        <img src="res/img/large/demoman.webp" alt="Character Image" class="character" id="character-large-image">
                     </div>
                     <img src="res/img/icons/arrow_forward.svg" alt="Next image" id="character-image-next" class="icon-button">
                 </div>
+                <p style="font-style: italic;" id="character-description">Demoman</p>
             </div>
         </div>
+        <div class="black-box footer flex flex-vert">
+            <p>Web Multimedia Application</p>
+            <p>&copy; Vadim K. Chaykin, P3324, #322864, DMA1.1</p>
+        </div>
+        <canvas id="laser-canvas"></canvas>
+
         <script type="application/json" id="data">
             {
                 "ids": [
@@ -73,7 +81,9 @@
                     "demoman": {
                         "colors": {
                             "primary": "#5885A2",
-                            "secondary": "#28394D"
+                            "secondary": "#28394D",
+                            "tertiary": "#839FA3",
+                            "background": "#18233D"
                         },
                         "music": "res/music/demoman.mp3",
                         "track_name": "Drunken Pipe Bomb",
@@ -83,7 +93,9 @@
                     "engineer": {
                         "colors": {
                             "primary": "#B88035",
-                            "secondary": "#384248"
+                            "secondary": "#384248",
+                            "tertiary": "#7C6C57",
+                            "background": "#141414"
                         },
                         "music": "res/music/engineer.mp3",
                         "track_name": "Upgrade Station",
@@ -93,7 +105,9 @@
                     "soldier": {
                         "colors": {
                             "primary": "#B8383B",
-                            "secondary": "#483838"
+                            "secondary": "#483838",
+                            "tertiary": "#A89A8C",
+                            "background": "#3B1F23"
                         },
                         "music": "res/music/soldier.mp3",
                         "track_name": "Rocket Jump Waltz",
@@ -105,12 +119,20 @@
                     "res/img/large/demoman.webp",
                     "res/img/large/engineer.webp",
                     "res/img/large/soldier.webp"
-                ]
+                ],
+                "descriptions": {
+                    "demoman": "Demoman",
+                    "engineer": "Engineer",
+                    "soldier": "Soldier"
+                }
             }
         </script>
-        <script type="text/javascript" src="src/dataUtils.js"></script>
-        <script type="text/javascript" src="src/imageControls.js"></script>
-        <script type="text/javascript" src="src/audioControls.js"></script>
-        <script type="text/javascript" src="src/main.js"></script>
+        <!-- Here the rest of the script imports should be located -->
+        <script src="src/config.js"></script>
+        <script src="src/audioManager.js"></script>
+        <script src="src/imageSwitcher.js"></script>
+        <script src="src/visualization.js"></script>
+        <script src="src/laser.js"></script>
+        <script src="src/main.js"></script>
     </body>
 </html>

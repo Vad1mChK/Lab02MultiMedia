@@ -28,6 +28,16 @@ body {
     height: 100vh;
 }
 
+#laser-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+}
+
 .content {
     position: relative;
     z-index: 1;
@@ -62,6 +72,14 @@ body {
     background: #10101080;
     backdrop-filter: blur(32px);
     min-width: 480px;
+}
+
+.black-box.footer {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 32px 32px 0 0 ;
 }
 
 .black-box.flex {
