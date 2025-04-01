@@ -3,19 +3,10 @@ let currentMode = 'demoman';
 
 document.addEventListener('DOMContentLoaded', () => {
     data = JSON.parse(document.getElementById('data').textContent);
-    audioState.projectWideOnTrackIndexChange = (index) => {
-        imageState.setBaseImageIndex(index);
-    };
 })
 
 const sketch = (p) => {
     let particles = [];
-
-    p.preload = () => {
-        const song = p.loadSound('res/music/demoman.mp3');
-        audioState.p5Sound = song;
-        audioState.p5LoadSoundFunc = p.loadSound;
-    }
 
     p.setup = () => {
         const canvas = p.createCanvas(p.windowWidth, p.windowHeight);
