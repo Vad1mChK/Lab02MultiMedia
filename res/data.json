@@ -1,0 +1,39 @@
+{
+  "tracks": {
+    "demoman": {
+      "colors": {
+        "primary": "#5885A2",
+        "secondary": "#28394D"
+      },
+      "music": "res/music/demoman.mp3",
+      "track_name": "Drunken Pipe Bomb",
+      "track_performer": "Team Fortress 2",
+      "default_image_index": 0
+    },
+    "engineer": {
+      "colors": {
+        "primary": "#B88035",
+        "secondary": "#384248"
+      },
+      "music": "res/music/engineer.mp3",
+      "track_name": "Upgrade Station",
+      "track_performer": "Team Fortress 2",
+      "default_image_index": 1
+    },
+    "soldier": {
+      "colors": {
+        "primary": "#B8383B",
+        "secondary": "#483838"
+      },
+      "music": "res/music/soldier.mp3",
+      "track_name": "Rocket Jump Waltz",
+      "track_performer": "Team Fortress 2",
+      "default_image_index": 2
+    }
+  },
+  "images": [
+    "res/img/large/demoman.webp",
+    "res/img/large/engineer.webp",
+    "res/img/large/soldier.webp"
+  ]
+}
